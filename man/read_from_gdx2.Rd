@@ -23,7 +23,7 @@ read_from_gdx2(
 Each name in the list corresponds to a column name, and its value
 is a character vector of the elements to keep. Filtering is case-insensitive.
 
-\strong{Example:}
+\strong{Examples:}
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{filters = list(
   variable = c("v_Objective"),

@@ -18,7 +18,7 @@
 #' @param fadn_dictionary An excel file that has the following sheets TF14, ESC that give the correspondence of TF14 to TF14.text and ESC to ESC6.text
 #' @param additional_AB_columns A vector with names of the TABLE_AB table to include
 #' @return DT with the FDALL and the NUTS0,NUTS1,NUTS2,TF14,TF8,ECS,ORGANIC,UAA,Weight and their text description
-#' @export
+#' export
 get_FARM_INFO <- function(
     database_dir = "E:/IFM_CAP2/Database2020",
     d_fadn_gdx = "d.fadn/ifm_cap_out/d_fadn_ifm_cap_data_2020.gdx",
@@ -26,10 +26,6 @@ get_FARM_INFO <- function(
     fadn_dictionary = "U:/SCIENTIFIC/FARM @ U/30-Projects/01-IFM-CAP/04-Model External Data/fadn/dictionary.xlsx",
     additional_AB_columns = c()
 ) {
-
-  if (!require(data.table)) {    stop("data.table not installed") }
-  if (!require(gdxrrw)) {    stop("gdxrrw not installed") }
-
 
   d_fadn_gdx.path = paste0(database_dir,"/",d_fadn_gdx)
 
@@ -44,7 +40,7 @@ get_FARM_INFO <- function(
     merge(
       read_from_gdx("FD_TO_TF14",d_fadn_gdx.path)
       ,
-      data.table(
+      data.table::data.table(
         openxlsx::read.xlsx(
           fadn_dictionary,
           "TF14"
@@ -66,7 +62,7 @@ get_FARM_INFO <- function(
     tmp1,
     merge(
       read_from_gdx("FD_TO_ESC",d_fadn_gdx.path),
-      data.table(
+      data.table::data.table(
         openxlsx::read.xlsx(
           fadn_dictionary,
           "ESC"
@@ -201,14 +197,11 @@ get_FARM_INFO <- function(
 #' @param d_fadn_folder The folder with the data from the d.fadn that contains the rds files with the fadn tables (tableAB.rds, tableSE.rds, etc.)
 #' @param fadn_dictionary An excel file that has the following sheets TF14, ESC that give the correspondence of TF14 to TF14.text and ESC to ESC6.text
 #' @return DT with the FDALL and YEAR, and the NUTS0,NUTS1,NUTS2,TF14,TF8,ECS,ORGANIC,UAA,Weight and their text description
-#' @export
+#' export
 get_FARM_INFO_allYears <- function(
     d_fadn_folder = "E:/IFM_CAP2/Database2020/d.fadn/filtered_load",
     fadn_dictionary = "U:/SCIENTIFIC/FARM @ U/30-Projects/01-IFM-CAP/04-Model External Data/fadn/dictionary.xlsx"
 ) {
-
-  if (!require(data.table)) {    stop("data.table not installed") }
-  if (!require(gdxrrw)) {    stop("gdxrrw not installed") }
 
   #read from tableAB
   tmp1 = readRDS(paste0(d_fadn_folder,"/tableAB.rds"))[,.(FDALL=factor(ID),YEAR,NUTS0,NUTS1,NUTS2,NUTS3,
@@ -218,7 +211,7 @@ get_FARM_INFO_allYears <- function(
   #TF14
   tmp1 = merge(
     tmp1,
-    data.table(
+    data.table::data.table(
       openxlsx::read.xlsx(
         fadn_dictionary,
         "TF14"
@@ -274,7 +267,7 @@ get_FARM_INFO_allYears <- function(
 
   tmp1[,TF14.text:=factor(
     as.character(TF14.text),
-    levels = unique(data.table(
+    levels = unique(data.table::data.table(
       openxlsx::read.xlsx(
         fadn_dictionary,
         "TF14"
@@ -286,7 +279,7 @@ get_FARM_INFO_allYears <- function(
 
   tmp1[,TF8.text:=factor(
     as.character(TF8.text),
-    levels = unique(data.table(
+    levels = unique(data.table::data.table(
       openxlsx::read.xlsx(
         fadn_dictionary,
         "TF14"
@@ -297,7 +290,7 @@ get_FARM_INFO_allYears <- function(
 
   tmp1[,TF3.text:=factor(
     as.character(TF3.text),
-    levels = unique(data.table(
+    levels = unique(data.table::data.table(
       openxlsx::read.xlsx(
         fadn_dictionary,
         "TF14"
@@ -308,7 +301,7 @@ get_FARM_INFO_allYears <- function(
 
   tmp1[,ESC14.text:=factor(
     as.character(ESC14.text),
-    levels = unique(data.table(
+    levels = unique(data.table::data.table(
       openxlsx::read.xlsx(
         fadn_dictionary,
         "ESC"
@@ -319,7 +312,7 @@ get_FARM_INFO_allYears <- function(
 
   tmp1[,ESC6.text:=factor(
     as.character(ESC6.text),
-    levels = unique(data.table(
+    levels = unique(data.table::data.table(
       openxlsx::read.xlsx(
         fadn_dictionary,
         "ESC"
@@ -330,7 +323,7 @@ get_FARM_INFO_allYears <- function(
 
   tmp1[,ESC6.text.short:=factor(
     as.character(ESC6.text.short),
-    levels = unique(data.table(
+    levels = unique(data.table::data.table(
       openxlsx::read.xlsx(
         fadn_dictionary,
         "ESC"

@@ -2,7 +2,7 @@
 % Please edit documentation in R/gdx.R
 \name{save_to_gdx}
 \alias{save_to_gdx}
-\title{save_to_gdx Function}
+\title{Saves to gdx a GDX.list}
 \usage{
 save_to_gdx(GDX.list.cur, save_gdx_path)
 }
@@ -12,5 +12,5 @@ save_to_gdx(GDX.list.cur, save_gdx_path)
 \item{save_gdx_path}{A string with the path of the GDX file}
 }
 \description{
-Saves to gdx a list of data.tables
+TODO explain what a GDX.list is
 }

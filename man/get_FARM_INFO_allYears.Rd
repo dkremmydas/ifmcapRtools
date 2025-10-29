@@ -18,6 +18,7 @@ get_FARM_INFO_allYears(
 }
 \value{
 DT with the FDALL and YEAR, and the NUTS0,NUTS1,NUTS2,TF14,TF8,ECS,ORGANIC,UAA,Weight and their text description
+export
 }
 \description{
 This function retrieves information data for farms from FADN, for all years. It uses the d.fadn module.

@@ -10,11 +10,11 @@ Imports:
     data.table,
     sf,
     ggplot2,
-    dplyr,
     openxlsx,
     gdxrrw,
     stringr,
-    knitr
+    knitr,
+    tidytable
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

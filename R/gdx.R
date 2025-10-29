@@ -41,9 +41,6 @@
 
 read_from_gdx = function(symbol,gdx_path,filters=list(),custom_colnames=c(),value_colname="value",get_te=FALSE,get_ts=FALSE) {
 
-  if (!require(gdxrrw)) {    stop("gdxrrw not installed") }
-  if (!require(data.table)) {    stop("data.table not installed") }
-
   #check of the symbol is a set or a parameter
   tmp1=gdxrrw::gdxInfo(gdx_path,dump = F,returnDF=T)
 
@@ -56,10 +53,10 @@ read_from_gdx = function(symbol,gdx_path,filters=list(),custom_colnames=c(),valu
 
   #get the number of dimensions
   if(isSet) {
-    num_of_dims = data.table(tmp1$sets)[tolower(name)==tolower(symbol),dim]
+    num_of_dims = data.table::data.table(tmp1$sets)[tolower(name)==tolower(symbol),dim]
   } else {
     get_te=F
-    num_of_dims = data.table(tmp1$parameters)[tolower(name)==tolower(symbol),dim]
+    num_of_dims = data.table::data.table(tmp1$parameters)[tolower(name)==tolower(symbol),dim]
   }
 
   default_colnames = unlist(tmp2[1,"domnames"])
@@ -73,7 +70,7 @@ read_from_gdx = function(symbol,gdx_path,filters=list(),custom_colnames=c(),valu
 
   #If the loaded data is a SET
   if(isSet) {
-    tmp3 = data.table(
+    tmp3 = data.table::data.table(
       droplevels(
         rgdx.set(
           gdx_path,
@@ -89,16 +86,16 @@ read_from_gdx = function(symbol,gdx_path,filters=list(),custom_colnames=c(),valu
 
       if(length(custom_colnames)==num_of_dims) {
         #using the custom column names
-        setnames(tmp3,old=1:num_of_dims,new=custom_colnames)
+        data.table::setnames(tmp3,old=1:num_of_dims,new=custom_colnames)
 
       } else {
         warning("The custom_colnames contain ", length(custom_colnames), " elements, but the loaded gdx contains ",length(names(tmp3)), " elements. We use the gdx column names." )
-        setnames(tmp3,new=default_colnames)
+        data.table::setnames(tmp3,new=default_colnames)
       }
 
     } else {
       #using the gdx column names
-      setnames(tmp3,new=default_colnames)
+      data.table::setnames(tmp3,new=default_colnames)
 
     }
 
@@ -107,7 +104,7 @@ read_from_gdx = function(symbol,gdx_path,filters=list(),custom_colnames=c(),valu
     #If the loaded data is a PARAMETER
   } else {
 
-    tmp3 = data.table(
+    tmp3 = data.table::data.table(
       droplevels(
         rgdx.param(
           gdx_path,
@@ -122,20 +119,20 @@ read_from_gdx = function(symbol,gdx_path,filters=list(),custom_colnames=c(),valu
 
       if(length(custom_colnames)==num_of_dims) {
         #using the custom column names
-        setnames(tmp3,old=1:num_of_dims,new=custom_colnames)
+        data.table::setnames(tmp3,old=1:num_of_dims,new=custom_colnames)
 
       } else {
         warning("The custom_colnames contain ", length(custom_colnames), " elements, but the loaded gdx contains ",length(names(tmp3)), " elements. We use the gdx column names." )
-        setnames(tmp3,new=c(default_colnames,"value"))
+        data.table::setnames(tmp3,new=c(default_colnames,"value"))
       }
 
     } else {
       #using the gdx column names
-      setnames(tmp3,new=c(default_colnames,"value"))
+      data.table::setnames(tmp3,new=c(default_colnames,"value"))
 
     }
 
-    setnames(tmp3,old=(num_of_dims+1),new="value")
+    data.table::setnames(tmp3,old=(num_of_dims+1),new="value")
 
   }
 
@@ -150,7 +147,7 @@ read_from_gdx = function(symbol,gdx_path,filters=list(),custom_colnames=c(),valu
 
   }
 
-  if(!isSet) { setnames(tmp3,old="value",new=value_colname) }
+  if(!isSet) { data.table::setnames(tmp3,old="value",new=value_colname) }
 
   attr(tmp3,"isSet") = isSet
 
@@ -209,9 +206,6 @@ read_from_gdx = function(symbol,gdx_path,filters=list(),custom_colnames=c(),valu
 
 read_from_gdx2 = function(symbol,gdx_path,filters=list(),custom_colnames=c(),value_colname="value",get_te=FALSE,get_ts=FALSE) {
 
-  if (!require(gdxrrw)) {    stop("gdxrrw not installed") }
-  if (!require(data.table)) {    stop("data.table not installed") }
-
   # Check that the file exists
   if (!file.exists(gdx_path)) {
     stop(sprintf("GDX file does not exist: %s", gdx_path))
@@ -256,7 +250,7 @@ read_from_gdx2 = function(symbol,gdx_path,filters=list(),custom_colnames=c(),val
   column_names[used_name=="*",used_name:=paste0("V",col_num)]
 
   # Prepare filters as a named list for easy lookup
-  filter_lookup <- setNames(filters, names(filters))
+  filter_lookup <- stats::setNames(filters, names(filters))
 
   # Add filter_value column: NA if no filter, otherwise the filter value
   column_names[, filter_value := lapply(used_name, function(nm) {
@@ -268,7 +262,7 @@ read_from_gdx2 = function(symbol,gdx_path,filters=list(),custom_colnames=c(),val
   #Get the uels
   all_uels = gdxrrw::rgdx(gdx_path,requestList = list(name=symbol,compress=T))$uels
 
-  uels.filters = copy(all_uels)
+  uels.filters = data.table::copy(all_uels)
   for (i in seq_len(nrow(column_names))) {
     filter_vals <- column_names$filter_value[[i]]
 
@@ -295,7 +289,7 @@ read_from_gdx2 = function(symbol,gdx_path,filters=list(),custom_colnames=c(),val
   }
 
   print(column_names)
-  str(uels.filters)
+  utils::str(uels.filters)
 
   #load the data
   b=rgdx(gdxName=gdx_path,
@@ -309,7 +303,7 @@ read_from_gdx2 = function(symbol,gdx_path,filters=list(),custom_colnames=c(),val
 
   #convert to dt approach gpt
   gdx_data <- as.data.table(b$val)
-  setnames(gdx_data, c(column_names$used_name, value_colname), skip_absent = TRUE)
+  data.table::setnames(gdx_data, c(column_names$used_name, value_colname), skip_absent = TRUE)
   for (i in seq_len(length(b$uels))) {
     cur_col_name = column_names[col_num==i,used_name]
     gdx_data[[cur_col_name]] <- factor(
@@ -363,7 +357,7 @@ read_from_many_gdxs <- function(symbol, gdxfile_patt,
                                 filters = list(),
                                 keep_filename = FALSE) {
 
-  LOADING_INFO <- data.table(FILE = character(), RECORDS = numeric())
+  LOADING_INFO <- data.table::data.table(FILE = character(), RECORDS = numeric())
 
   # Expand vector of patterns into a unified file list
   files.to.load <- unique(unlist(lapply(gdxfile_patt, Sys.glob)))
@@ -409,7 +403,7 @@ read_from_many_gdxs <- function(symbol, gdxfile_patt,
 #'
 #' @param symbol The symbol to copy
 #' @param gdx_path The path to the gdx file
-#' @return a GDX.list with the following elements, { domains,ts,data}
+#' @return a GDX.list with the following elements, \{ domains,ts,data\}
 #' @export
 
 copy_gdx_symbol_tolist_element = function(symbol,gdx_path) {
@@ -423,7 +417,7 @@ copy_gdx_symbol_tolist_element = function(symbol,gdx_path) {
   return(list(
     domains = domains.cur,
     ts = attr(tmp1,"ts"),
-    data = copy(tmp1)
+    data = data.table::copy(tmp1)
   ))
 
 }
@@ -473,9 +467,6 @@ copy_all_gdx_symbols_tolist = function(gdx_path,exclude_symbols=c()) {
 
 save_to_gdx = function(GDX.list.cur,save_gdx_path) {
 
-  if (!require(gdxrrw)) {    stop("gdxrrw not installed") }
-
-
   GDX.to_save=list()
 
   for(n in names(GDX.list.cur)) {
@@ -483,7 +474,7 @@ save_to_gdx = function(GDX.list.cur,save_gdx_path) {
     cat("Saving in GDX -> ",n,"\n")
 
     if("data.table" %in% class(GDX.list.cur[[n]][["data"]])) {
-      tmp1 = copy(GDX.list.cur[[n]][["data"]])
+      tmp1 =data.table::copy(GDX.list.cur[[n]][["data"]])
 
       #check the number of elements in domain list and ocmpare to the number of columns
       data_col_num_min = length(GDX.list.cur[[n]][["domains"]])
@@ -528,7 +519,7 @@ save_to_gdx = function(GDX.list.cur,save_gdx_path) {
 
     else if("numeric" %in% class(GDX.list.cur[[n]][["data"]])) {
 
-      tmp1 = copy(GDX.list.cur[[n]][["data"]])
+      tmp1 = data.table::copy(GDX.list.cur[[n]][["data"]])
       attr(tmp1,"domains") =c()
       attr(tmp1,"symName") = n
       attr(tmp1,"ts") = GDX.list.cur[[n]][["ts"]]
@@ -539,7 +530,7 @@ save_to_gdx = function(GDX.list.cur,save_gdx_path) {
       }
 
 
-      GDX.to_save[[length(GDX.to_save)+1]] = copy(tmp1)
+      GDX.to_save[[length(GDX.to_save)+1]] = data.table::copy(tmp1)
 
     }
 

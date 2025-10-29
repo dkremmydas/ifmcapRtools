@@ -1,1 +1,101 @@
+# History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+.RDataTmp
+
+# User-specific files
+.Ruserdata
+
+# Example code in package build process
+*-Ex.R
+
+# RStudio files
+.Rproj.user/
+.Rproj.user/*
+*.Rproj
+
+# R build files
+.Rbuildignore
+.Rinstignore
+.Rcheck/
+.Rcheck/*
+/.Rcheck/
+*.tar.gz
+*.Rcheck/
+*.Rcheck/*
+.Rhistory
+.RData
+
+# Compiled dynamic libraries
+*.so
+*.dll
+*.dylib
+
+# Output files from vignettes, examples, or tests
+*.html
+*.pdf
+*.docx
+*.csv
+*.rds
+*.RData
+*.Rda
+*.feather
+*.parquet
+
+# Temporary files created by R CMD check or devtools
 .Rproj.user
+.Rproj.user/*
+.Rproj.user/shared/notebooks/*
+.Rproj.user/shared/pcs/*
+.Rproj.user/shared/sources/*
+.Rproj.user/shared/tmp/*
+.Rproj.user/shared/jobs/*
+.Rproj.user/shared/data/*
+/.Rhistory
+/.RData
+.RDataTmp
+/.httr-oauth
+/devtools_history
+.DS_Store
+Thumbs.db
+
+# vignettes, pkgdown, or documentation build outputs
+inst/doc
+doc/
+Meta/
+vignettes/*.html
+vignettes/*.pdf
+pkgdown/
+_site/
+_site.yml
+
+# Test outputs
+tests/testthat/Rplots.pdf
+.Rout
+.Rout.save
+.Rout.fail
+
+# Coverage and performance tools
+.Rcov
+.Rprofile
+covr/
+*.gcov
+*.gcda
+*.gcno
+
+# Logs and debugging
+*.log
+*.tmp
+*.bak
+*.swp
+*.sw~
+
+# Data and cache directories
+.cache/
+.cache/*
+data-raw/
+tmp/
+temp/

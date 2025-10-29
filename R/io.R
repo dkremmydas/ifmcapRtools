@@ -14,16 +14,13 @@
 #' @param split.dist How many cells to leave between the data.frames to be saved
 #' @param overwrite.cur T for overwrite the file if it exists
 #' @return NULL
-#' @example
+#' #example
 #'     Provide an example of its usage
 #' @export
 
 save_to_excel = function(EXCEL.list.cur,save_xl_path,split.dist = 4,overwrite.cur = T) {
 
-  if (!require(openxlsx)) {    stop("openxlsx not installed") }
-
-
-  wb = createWorkbook("IFM-CAP team")
+  wb = openxlsx::createWorkbook("IFM-CAP team")
 
   names(EXCEL.list.cur) <- substr(names(EXCEL.list.cur), 1, 25)
 
@@ -36,7 +33,7 @@ save_to_excel = function(EXCEL.list.cur,save_xl_path,split.dist = 4,overwrite.cu
     cat("Saving to Excel -->", n,"\n")
 
 
-    if(is.data.table(EXCEL.list.cur[[n]])) {
+    if(data.table::is.data.table(EXCEL.list.cur[[n]])) {
 
       cat("\t", n," [",nrow(EXCEL.list.cur[[n]]),"x",ncol(EXCEL.list.cur[[n]]),"]\n")
 
@@ -52,14 +49,14 @@ save_to_excel = function(EXCEL.list.cur,save_xl_path,split.dist = 4,overwrite.cu
         cat("\t", names(EXCEL.list.cur[[n]])[n2]," [",nrow(EXCEL.list.cur[[n]][[n2]]),"x",ncol(EXCEL.list.cur[[n]][[n2]]),"]\n")
 
         r=r+1
-        writeData(wb,n,
+        openxlsx::writeData(wb,n,
                   names(EXCEL.list.cur[[n]])[n2],
                   startRow = r,startCol=c)
 
 
         r=r+1
 
-        writeData(wb,n,
+        openxlsx::writeData(wb,n,
                   EXCEL.list.cur[[n]][[n2]],
                   startRow = r,startCol=c)
 
@@ -84,7 +81,7 @@ save_to_excel = function(EXCEL.list.cur,save_xl_path,split.dist = 4,overwrite.cu
 #' @export
 copy.to.clipboard = function (d, getRownames = F, ...)
 {
-  write.table(d, "clipboard-65000", sep = "\t",
+  utils::write.table(d, "clipboard-65000", sep = "\t",
               row.names = getRownames, ...)
 }
 
@@ -98,7 +95,6 @@ copy.to.clipboard = function (d, getRownames = F, ...)
 #' @export
 kable_print = function (d,big.mark.cur=",",digits.cur=0,caption="")
 {
-  if (!require(knitr)) {    stop("knitr not installed") }
 
   if(nchar(caption)>0) {     cat("\n",caption,"\n",rep("-",nchar(caption)/2)); }
 

@@ -27,7 +27,7 @@ create_map_fill(
 )
 }
 \arguments{
-\item{DT}{A data.table with only two columns: {NUTS0,NUTS1,NUTS2,NUTS3} and value.}
+\item{DT}{A data.table with only two columns: \{NUTS0,NUTS1,NUTS2,NUTS3\} and value.}
 
 \item{resol}{The NUTS resolution that the data refers to. Can be NUTS0,NUTS1,NUTS2,NUTS3}
 

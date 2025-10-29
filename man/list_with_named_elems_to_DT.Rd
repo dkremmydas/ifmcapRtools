@@ -14,6 +14,8 @@ list_with_named_elems_to_DT(list.cur, id.col.cur)
 }
 \value{
 a DT
+example
+TODO: Provide an example of the usage of this function
 }
 \description{
 list_with_named_elems_to_DT

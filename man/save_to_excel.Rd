@@ -2,7 +2,7 @@
 % Please edit documentation in R/io.R
 \name{save_to_excel}
 \alias{save_to_excel}
-\title{save_to_excel Function}
+\title{Save an EXCEL.list into an excel file}
 \usage{
 save_to_excel(EXCEL.list.cur, save_xl_path, split.dist = 4, overwrite.cur = T)
 }
@@ -15,6 +15,14 @@ save_to_excel(EXCEL.list.cur, save_xl_path, split.dist = 4, overwrite.cur = T)
 
 \item{overwrite.cur}{T for overwrite the file if it exists}
 }
+\value{
+NULL
+#example
+Provide an example of its usage
+}
 \description{
 This function takes a numeric vector as input and computes various statistical measures, including mean, median, mode, and standard deviation.
+}
+\details{
+TODO explain what is an EXCEL.list
 }

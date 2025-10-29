@@ -7,7 +7,7 @@
 #'
 #' @seealso <https://r-charts.com/spatial/choropleth-map-ggplot2/>
 #'
-#' @param DT A data.table with only two columns: {NUTS0,NUTS1,NUTS2,NUTS3} and value.
+#' @param DT A data.table with only two columns: \{NUTS0,NUTS1,NUTS2,NUTS3\} and value.
 #'
 #' @param resol The NUTS resolution that the data refers to. Can be NUTS0,NUTS1,NUTS2,NUTS3
 #'
@@ -40,9 +40,6 @@ create_map_fill = function(DT,
                            ylim.cur=c(1380000, 5500000),
                            debug=F) {
 
-  if (!require(sf)) {    stop("sf not installed") }
-  if (!require(dplyr)) {    stop("dplyr not installed") }
-
   #default values for scale_fill_discrete
   scale_fill_discrete.cur=list(
     n=ifelse(is.null(scale_fill_discrete$n),3,scale_fill_discrete$n),
@@ -71,21 +68,21 @@ create_map_fill = function(DT,
   }
 
   if(nuts_year==2013) {
-    nuts_shp <- st_read(paste0(external_data,"/gis/NUTS_RG_20M_2013_3035.shp/NUTS_RG_20M_2013_3035.shp"))
+    nuts_shp <- sf::st_read(paste0(external_data,"/gis/NUTS_RG_20M_2013_3035.shp/NUTS_RG_20M_2013_3035.shp"))
   } else if (nuts_year==2016) {
-    nuts_shp <- st_read(paste0(external_data,"/gis/NUTS_RG_20M_2016_3035.shp/NUTS_RG_20M_2016_3035.shp"))
+    nuts_shp <- sf::st_read(paste0(external_data,"/gis/NUTS_RG_20M_2016_3035.shp/NUTS_RG_20M_2016_3035.shp"))
   } else {
     stop("We do not have a shape file related to the definition of NUTS for year ",nuts_year)
   }
 
 
-  nuts_shp.2 = left_join(
+  nuts_shp.2 = tidytable::left_join(
     nuts_shp[nuts_shp$NUTS_ID%in%unique(DT[[resol]]),],
     DT[,.(NUTS_ID=DT[[resol]],value_to_map=value)]
   )
 
 
-  p = ggplot( nuts_shp.2  ) +
+  p = ggplot2::ggplot( nuts_shp.2  ) +
     geom_sf(data = nuts_shp[nuts_shp$LEVL_CODE==0,], fill = bg_fill, color = NA)+
     geom_sf(aes(fill = value_to_map),
             color = "white",
@@ -99,7 +96,7 @@ create_map_fill = function(DT,
 
 
   if(scale_type=="discrete") {
-    p=p+scale_fill_manual(values=hcl.colors(n = scale_fill_discrete.cur$n,
+    p=p+scale_fill_manual(values=grDevices::hcl.colors(n = scale_fill_discrete.cur$n,
                                             palette = scale_fill_discrete.cur$palette,
                                             rev = scale_fill_discrete.cur$rev,
                                             alpha = scale_fill_discrete.cur$alpha))
@@ -149,9 +146,6 @@ create_map_fill_scen = function(DT,
                            ylim.cur=c(1380000, 5500000),
                            debug=F) {
 
-  if (!require(sf)) {    stop("sf not installed") }
-  if (!require(dplyr)) {    stop("dplyr not installed") }
-
   #default values for scale_fill_discrete
   scale_fill_discrete.cur=list(
     n=ifelse(is.null(scale_fill_discrete$n),3,scale_fill_discrete$n),
@@ -180,21 +174,21 @@ create_map_fill_scen = function(DT,
   }
 
   if(nuts_year==2013) {
-    nuts_shp <- st_read(paste0(external_data,"/gis/NUTS_RG_20M_2013_3035.shp/NUTS_RG_20M_2013_3035.shp"))
+    nuts_shp <- sf::st_read(paste0(external_data,"/gis/NUTS_RG_20M_2013_3035.shp/NUTS_RG_20M_2013_3035.shp"))
   } else if (nuts_year==2016) {
-    nuts_shp <- st_read(paste0(external_data,"/gis/NUTS_RG_20M_2016_3035.shp/NUTS_RG_20M_2016_3035.shp"))
+    nuts_shp <- sf::st_read(paste0(external_data,"/gis/NUTS_RG_20M_2016_3035.shp/NUTS_RG_20M_2016_3035.shp"))
   } else {
     stop("We do not have a shape file related to the definition of NUTS for year ",nuts_year)
   }
 
 
-  nuts_shp.2 = left_join(
+  nuts_shp.2 = tidytable::left_join(
     nuts_shp[nuts_shp$NUTS_ID%in%unique(DT[[resol]]),],
     DT[,.(NUTS_ID=DT[[resol]],SCEN,value_to_map=value)]
   )
 
 
-  p = ggplot( nuts_shp.2  ) +
+  p = ggplot2::ggplot( nuts_shp.2  ) +
     geom_sf(data = nuts_shp[nuts_shp$LEVL_CODE==0,], fill = bg_fill, color = NA)+
     geom_sf(aes(fill = value_to_map),
             color = "white",
@@ -208,7 +202,7 @@ create_map_fill_scen = function(DT,
 
 
   if(scale_type=="discrete") {
-    p=p+scale_fill_manual(values=hcl.colors(n = scale_fill_discrete.cur$n,
+    p=p+scale_fill_manual(values=grDevices::hcl.colors(n = scale_fill_discrete.cur$n,
                                             palette = scale_fill_discrete.cur$palette,
                                             rev = scale_fill_discrete.cur$rev,
                                             alpha = scale_fill_discrete.cur$alpha))

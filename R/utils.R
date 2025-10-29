@@ -7,11 +7,7 @@
 #' @return the factor with the labels text wrapped
 #' @export
 str_wrap_factor <- function(x, width.cur=10, ...) {
-
-  if (!require(stringr)) {    stop("stringr not installed") }
-
-
-  levels(x) <- str_wrap(levels(x), width=width.cur, ...)
+  levels(x) <- stringr::str_wrap(levels(x), width=width.cur, ...)
   x
 }
 
@@ -22,16 +18,14 @@ str_wrap_factor <- function(x, width.cur=10, ...) {
 #' @param list.cur The list to convert
 #' @param dt.names A vector with the names of the returned DT
 #' @return a DT
-#' @example
+#' #example
 #'   TODO Provide an example of usage of this function
 #' @export
 list_with_flat_elems_to_DT = function(list.cur,dt.names) {
 
-  if (!require(data.table)) {    stop("data.table not installed") }
+  tmp1 = data.table::data.table(utils::stack(tmp1))
 
-  tmp1 = data.table(stack(tmp1))
-
-  setnames(tmp1,c("values","ind"),dt.names)
+  data.table::setnames(tmp1,c("values","ind"),dt.names)
 
   return(tmp1)
 }
@@ -51,15 +45,8 @@ list_with_flat_elems_to_DT = function(list.cur,dt.names) {
 #'
 #' @return A character string containing the full file path.
 #'
-#' @examples
-#' # Default: use CONFIG$database_dir
-#' _dbfile("input/fadn_data.csv")
-#'
-#' # Custom base directory
-#' _dbfile("input/fadn_data.csv", db = "/data/ifmcap")
-#'
 #' @export
-_dbfile <- function(relative_filepath,db=CONFIG$database_dir) {
+get_db_path <- function(relative_filepath,db=CONFIG$database_dir) {
   paste0(db, "/", relative_filepath)
 }
 
@@ -71,14 +58,12 @@ _dbfile <- function(relative_filepath,db=CONFIG$database_dir) {
 #' @param list.cur The list to convert
 #' @param id.col.cur How to name the names of the list
 #' @return a DT
-#' @example
-#'    Provide an example of the usage of this function
+#' example
+#'    TODO: Provide an example of the usage of this function
 #' @export
 list_with_named_elems_to_DT = function(list.cur,id.col.cur) {
 
-  if (!require(data.table)) {    stop("data.table not installed") }
-
  return(
-   rbindlist(lapply(list.cur, as.list), idcol = id.col.cur)
+   data.table::rbindlist(lapply(list.cur, as.list), idcol = id.col.cur)
  )
 }

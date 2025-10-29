@@ -14,6 +14,8 @@ list_with_flat_elems_to_DT(list.cur, dt.names)
 }
 \value{
 a DT
+#example
+TODO Provide an example of usage of this function
 }
 \description{
 list_with_flat_elems_to_DT
